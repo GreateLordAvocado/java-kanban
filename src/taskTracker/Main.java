@@ -28,5 +28,5 @@ public class Main {
         manager.deleteEpic(epic1.getId());
         System.out.println("Все эпики после удаления: " + manager.getAllEpics());
     }
-}
+} // какой-то сбой при пуше коммита на гитхаб понатыкал комментариев, чтобы попробовать снова -__-
 
