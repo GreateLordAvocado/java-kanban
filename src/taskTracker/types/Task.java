@@ -8,10 +8,10 @@ public class Task {
     private String description;
     private Status status;
 
-    public Task(String name, String description) {
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
-        this.status = Status.NEW;
+        this.status = status;
     }
 
     public int getId() {
@@ -26,8 +26,16 @@ public class Task {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Status getStatus() {
@@ -50,9 +58,4 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-    @Override
-    public String toString() {
-        return "Task{id=" + id + ", name='" + name + "', status=" + status + "}";
-    }
-} //
+}
