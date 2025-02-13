@@ -61,6 +61,6 @@ public class Task {
 
     @Override
     public String toString() { // был косяк с выводом значений, порылся в интернете и нашел такой вариант решения проблемы
-        return "Задача № " + id + " , " + name + " , Описание: " + description + " , Текущий статус" + status;
+        return "Задача № " + id + ": " + name + " , Описание: " + description + " , Текущий статус" + status;
     }
 }
