@@ -14,8 +14,8 @@ public class Main {
         Epic epic1 = manager.createEpic(new Epic("Переезд", "Подготовка к переезду", Status.NEW));
         Epic epic2 = manager.createEpic(new Epic("Подготовка к экзамену", "Выучить материал", Status.NEW));
 
-        Subtask subtask1 = manager.createSubtask(new Subtask("Собрать вещи", "Упаковать чемоданы", Status.NEW, epic1.getId()));
-        Subtask subtask2 = manager.createSubtask(new Subtask("Найти грузчиков", "Найти машину", Status.NEW, epic1.getId()));
+        Subtask subtask1 = manager.createSubtask(new Subtask("Собрать вещи", "Упаковать чемоданы", Status.NEW, epic1));
+        Subtask subtask2 = manager.createSubtask(new Subtask("Найти грузчиков", "Найти машину", Status.NEW, epic1));
 
         System.out.println("Все задачи: " + manager.getAllTasks());
         System.out.println("Все эпики: " + manager.getAllEpics());

@@ -22,4 +22,10 @@ public class Epic extends Task {
     public void removeSubtask(Subtask subtask) {
         subtasksEpic.remove(subtask);
     }
+
+    @Override
+    public String toString() {
+        return "Эпик № " + getId() + " , " + getName() + " , Описание: " + getDescription() +
+                " Текущий статус " + getStatus() + " , Подзадача " + subtasksEpic;
+    }
 }

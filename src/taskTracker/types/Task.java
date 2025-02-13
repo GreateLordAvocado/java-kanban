@@ -58,4 +58,9 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() { // был косяк с выводом значений, порылся в интернете и нашел такой вариант решения проблемы
+        return "Задача № " + id + " , " + name + " , Описание: " + description + " , Текущий статус" + status;
+    }
 }

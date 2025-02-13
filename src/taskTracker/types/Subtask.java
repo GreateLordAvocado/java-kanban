@@ -1,14 +1,24 @@
 package taskTracker.types;
 
 public class Subtask extends Task {
-    private int epicId;
+    private Epic epic;
 
-    public Subtask(String name, String description, Status status, int epicId) {
+    public Subtask(String name, String description, Status status, Epic epic) {
         super(name, description, status);
-        this.epicId = epicId;
+        this.epic = epic;
+    }
+
+    public Epic getEpic() {
+        return epic;
     }
 
     public int getEpicId() {
-        return epicId;
+        return epic.getId();
+    }
+
+    @Override
+    public String toString() {
+        return "Подзадача " + getId() + getName() + " , Описание: " + getDescription() +
+                " , Текущий статус " + getStatus() + " , Номер подзадачи " + getEpicId();
     }
 }
