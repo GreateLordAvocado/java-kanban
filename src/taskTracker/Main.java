@@ -1,31 +1,33 @@
 package taskTracker;
 
 import taskTracker.control.TaskManager;
-import taskTracker.types.*;
+import taskTracker.control.Managers;
+import taskTracker.model.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Поехали!");
-        TaskManager manager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = manager.createTask(new Task("Купить продукты", "Купить яйца и молоко", Status.NEW));
-        Task task2 = manager.createTask(new Task("Сделать зарядку", "Сделать 5 подходов по 30 повторений", Status.NEW));
+        Task task1 = new Task("Купить продукты", "Купить яйца и молоко");
+        taskManager.addTask(task1);
+        Task task2 = new Task("Сделать зарядку", "Сделать 5 подходов по 30 повторений");
+        taskManager.addTask(task2);
 
-        Epic epic1 = manager.createEpic(new Epic("Переезд", "Подготовка к переезду", Status.NEW));
-        Epic epic2 = manager.createEpic(new Epic("Подготовка к экзамену", "Выучить материал", Status.NEW));
+        Epic epic1 = new Epic("Переезд", "Подготовка к переезду");
+        taskManager.addEpic(epic1);
+        Subtask subtask1 = new Subtask("Собрать вещи", "Упаковать чемоданы", Status.NEW, epic1.getId());
+        taskManager.addSubtask(subtask1);
 
-        Subtask subtask1 = manager.createSubtask(new Subtask("Собрать вещи", "Упаковать чемоданы", Status.NEW, epic1));
-        Subtask subtask2 = manager.createSubtask(new Subtask("Найти грузчиков", "Найти машину", Status.NEW, epic1));
+        // Просмотр задач
+        System.out.println(taskManager.getTask(task1.getId()));
+        System.out.println(taskManager.getTask(task2.getId()));
+        System.out.println(taskManager.getEpic(epic1.getId()));
+        System.out.println(taskManager.getSubtask(subtask1.getId()));
 
-        System.out.println("Все задачи: " + manager.getAllTasks());
-        System.out.println("Все эпики: " + manager.getAllEpics());
-        System.out.println("Все подзадачи: " + manager.getAllSubtasks());
-
-        subtask1.setStatus(Status.DONE);
-        manager.updateSubtask(subtask1);
-        System.out.println("Эпик после обновления подзадачи: " + manager.getEpicById(epic1.getId()));
-
-        manager.deleteEpic(epic1.getId());
-        System.out.println("Все эпики после удаления: " + manager.getAllEpics());
+        // Вывод истории просмотров
+        System.out.println("История задач:");
+        for (Task task : taskManager.getHistory()) {
+            System.out.println(task);
+        }
     }
 }
