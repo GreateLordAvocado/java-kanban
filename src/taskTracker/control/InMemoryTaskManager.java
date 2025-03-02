@@ -90,6 +90,55 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public void deleteAllTasks() {
+        tasks.clear();
+        historyManager.getHistory().clear();
+    }
+
+    @Override
+    public void deleteAllEpics() {
+        epics.clear();
+        subtasks.clear();
+        historyManager.getHistory().clear();
+    }
+
+    @Override
+    public void deleteAllSubtasks() {
+        subtasks.clear();
+        for (Epic epic : epics.values()) {
+            epic.clearSubtasks();
+            epic.setStatus(Status.NEW);
+        }
+        historyManager.getHistory().clear();
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        if (task == null || !tasks.containsKey(task.getId())) {
+            throw new IllegalArgumentException("Задача с ID " + task.getId() + " не найдена.");
+        }
+        tasks.put(task.getId(), task);
+    }
+
+    @Override
+    public void updateEpic(Epic epic) {
+        if (epic == null || !epics.containsKey(epic.getId())) {
+            throw new IllegalArgumentException("Эпик с ID " + epic.getId() + " не найден.");
+        }
+        epics.put(epic.getId(), epic);
+        updateEpicStatus(epic.getId());
+    }
+
+    @Override
+    public void updateSubtask(Subtask subtask) {
+        if (subtask == null || !subtasks.containsKey(subtask.getId())) {
+            throw new IllegalArgumentException("Подзадача с ID " + subtask.getId() + " не найдена.");
+        }
+        subtasks.put(subtask.getId(), subtask);
+        updateEpicStatus(subtask.getEpicId());
+    }
+
+    @Override
     public List<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
     }
