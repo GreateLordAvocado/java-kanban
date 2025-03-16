@@ -13,4 +13,4 @@ class ManagersTest {
     void shouldReturnInitializedHistoryManager() {
         assertNotNull(Managers.getDefaultHistory(), "Метод getDefaultHistory() должен возвращать инициализированный экземпляр HistoryManager");
     }
-}
+} //
