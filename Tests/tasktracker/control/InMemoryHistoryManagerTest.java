@@ -48,4 +48,4 @@ class InMemoryHistoryManagerTest {
 
         assertFalse(historyManager.getHistory().contains(task), "История не должна содержать удаленную задачу");
     }
-}//
+}
