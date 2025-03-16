@@ -6,6 +6,7 @@ import tasktracker.model.Subtask;
 import tasktracker.model.Status;
 
 class SubtaskTest {
+
     @Test
     void subtasksWithSameIdShouldBeEqual() {
         Subtask subtask1 = new Subtask("Subtask 1", "Subtask Description 1", Status.NEW, 1);
@@ -22,4 +23,4 @@ class SubtaskTest {
 
         assertEquals(1, subtask.getEpicId(), "Подзадача должна быть привязана к эпику");
     }
-} //
+}

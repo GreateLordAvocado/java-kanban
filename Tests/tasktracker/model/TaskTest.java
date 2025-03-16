@@ -6,6 +6,7 @@ import tasktracker.model.Task;
 import tasktracker.model.Status;
 
 class TaskTest {
+
     @Test
     void tasksWithSameIdShouldBeEqual() {
         Task task1 = new Task("Task 1", "Description 1");
@@ -23,4 +24,4 @@ class TaskTest {
 
         assertEquals(Status.IN_PROGRESS, task.getStatus(), "Задача должна иметь корректный статус");
     }
-} //
+}

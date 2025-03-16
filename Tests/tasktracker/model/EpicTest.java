@@ -6,6 +6,7 @@ import tasktracker.model.Epic;
 import tasktracker.model.Status;
 
 class EpicTest {
+
     @Test
     void epicsWithSameIdShouldBeEqual() {
         Epic epic1 = new Epic("Epic 1", "Epic Description 1");
@@ -28,4 +29,4 @@ class EpicTest {
 
         assertTrue(epic.getSubtasksEpic().contains(subtask.getId()), "Эпик должен хранить ID подзадачи");
     }
-} //
+}
