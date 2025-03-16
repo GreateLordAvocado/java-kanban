@@ -15,4 +15,11 @@ class SubtaskTest {
 
         assertEquals(subtask1, subtask2, "Подзадачи с одинаковым ID должны быть равны");
     }
+
+    @Test
+    void subtaskShouldHaveParentEpic() {
+        Subtask subtask = new Subtask("Subtask 1", "Description 1", Status.NEW, 1);
+
+        assertEquals(1, subtask.getEpicId(), "Подзадача должна быть привязана к эпику");
+    }
 }

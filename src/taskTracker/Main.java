@@ -18,13 +18,11 @@ public class Main {
         Subtask subtask1 = new Subtask("Собрать вещи", "Упаковать чемоданы", Status.NEW, epic1.getId());
         taskManager.addSubtask(subtask1);
 
-        // Просмотр задач
         System.out.println(taskManager.getTask(task1.getId()));
         System.out.println(taskManager.getTask(task2.getId()));
         System.out.println(taskManager.getEpic(epic1.getId()));
         System.out.println(taskManager.getSubtask(subtask1.getId()));
 
-        // Вывод истории просмотров
         System.out.println("История задач:");
         for (Task task : taskManager.getHistory()) {
             System.out.println(task);
