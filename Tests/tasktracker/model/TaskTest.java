@@ -1,9 +1,9 @@
-package taskTracker.model;
+package tasktracker.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import taskTracker.model.Task;
-import taskTracker.model.Status;
+import tasktracker.model.Task;
+import tasktracker.model.Status;
 
 class TaskTest {
     @Test
