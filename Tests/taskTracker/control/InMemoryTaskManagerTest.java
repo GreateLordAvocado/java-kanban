@@ -1,9 +1,8 @@
-package taskTracker.control;
+package tasktracker.control;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import taskTracker.model.*;
+import tasktracker.model.*;
 
 class InMemoryTaskManagerTest {
     private InMemoryTaskManager taskManager;

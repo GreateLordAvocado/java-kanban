@@ -1,6 +1,6 @@
-package taskTracker.control;
+package tasktracker.control;
 
-import taskTracker.model.*;
+import tasktracker.model.*;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {

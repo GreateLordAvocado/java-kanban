@@ -1,10 +1,8 @@
-package taskTracker.control;
+package tasktracker.control;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import taskTracker.model.*;
-import java.util.List;
+import tasktracker.model.*;
 
 class InMemoryHistoryManagerTest {
     private InMemoryHistoryManager historyManager;

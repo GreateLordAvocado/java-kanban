@@ -1,4 +1,4 @@
-package taskTracker.control;
+package tasktracker.control;
 
 public class Managers {
     public static TaskManager getDefault() {

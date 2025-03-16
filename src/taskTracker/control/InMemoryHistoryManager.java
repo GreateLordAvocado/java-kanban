@@ -1,6 +1,6 @@
-package taskTracker.control;
+package tasktracker.control;
 
-import taskTracker.model.Task;
+import tasktracker.model.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {

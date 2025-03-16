@@ -1,8 +1,8 @@
-package taskTracker;
+package tasktracker;
 
-import taskTracker.control.TaskManager;
-import taskTracker.control.Managers;
-import taskTracker.model.*;
+import tasktracker.control.TaskManager;
+import tasktracker.control.Managers;
+import tasktracker.model.*;
 
 public class Main {
     public static void main(String[] args) {
