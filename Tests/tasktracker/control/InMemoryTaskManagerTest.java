@@ -41,4 +41,5 @@ class InMemoryTaskManagerTest {
 
         assertNull(taskManager.getTask(taskId), "Удаленная задача не должна существовать в менеджере");
     }
+
 }

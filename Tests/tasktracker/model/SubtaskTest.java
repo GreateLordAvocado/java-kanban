@@ -20,4 +20,5 @@ class SubtaskTest {
 
         assertEquals(1, subtask.getEpicId(), "Подзадача должна быть привязана к эпику");
     }
+
 }
