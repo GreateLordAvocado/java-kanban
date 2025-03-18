@@ -1,5 +1,6 @@
 package tasktracker.control;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class ManagersTest {
@@ -12,4 +13,5 @@ class ManagersTest {
     void shouldReturnInitializedHistoryManager() {
         assertNotNull(Managers.getDefaultHistory(), "Метод getDefaultHistory() должен возвращать инициализированный экземпляр HistoryManager");
     }
+
 }

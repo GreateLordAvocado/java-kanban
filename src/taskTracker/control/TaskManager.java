@@ -4,12 +4,17 @@ import tasktracker.model.*;
 import java.util.*;
 
 public interface TaskManager {
+
     int addTask(Task task);
+
     void addEpic(Epic epic);
+
     void addSubtask(Subtask subtask);
 
     Task getTask(int id);
+
     Epic getEpic(int id);
+
     Subtask getSubtask(int id);
 
     void deleteTask(int id);
@@ -31,7 +36,11 @@ public interface TaskManager {
     void updateSubtask(Subtask subtask);
 
     List<Task> getAllTasks();
+
     List<Epic> getAllEpics();
+
     List<Subtask> getAllSubtasks();
+
     List<Task> getHistory();
-}//
+
+}

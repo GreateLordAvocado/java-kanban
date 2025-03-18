@@ -1,5 +1,6 @@
 package tasktracker.control;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasktracker.model.*;
@@ -40,4 +41,5 @@ class InMemoryTaskManagerTest {
 
         assertNull(taskManager.getTask(taskId), "Удаленная задача не должна существовать в менеджере");
     }
+
 }
