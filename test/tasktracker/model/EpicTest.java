@@ -27,4 +27,4 @@ class EpicTest {
         assertTrue(epic.getSubtasksEpic().contains(subtask.getId()), "Эпик должен хранить ID подзадачи");
     }
 
-} //
+}

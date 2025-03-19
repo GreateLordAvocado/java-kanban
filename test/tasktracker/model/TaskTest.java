@@ -22,4 +22,4 @@ class TaskTest {
         assertEquals(Status.IN_PROGRESS, task.getStatus(), "Задача должна иметь корректный статус");
     }
 
-} //
+}
