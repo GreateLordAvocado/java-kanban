@@ -1,5 +1,6 @@
 package tasktracker.control;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasktracker.model.*;
@@ -46,4 +47,5 @@ class InMemoryHistoryManagerTest {
 
         assertFalse(historyManager.getHistory().contains(task), "История не должна содержать удаленную задачу");
     }
-}
+
+} //
