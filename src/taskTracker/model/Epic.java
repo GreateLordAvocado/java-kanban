@@ -36,4 +36,5 @@ public class Epic extends Task {
                 + getStatus() + ", Подзадачи "
                 + subtasksEpic;
     }
-}//
+
+} //
