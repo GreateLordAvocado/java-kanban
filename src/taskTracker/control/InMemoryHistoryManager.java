@@ -4,71 +4,92 @@ import tasktracker.model.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static class Node {
-        Task task;
-        Node prev;
-        Node next;
 
-        Node(Task task) {
-            this.task = task;
-        }
+    private final Map<Integer, TaskNode> historyMap;
+    private TaskNode head;
+    private TaskNode tail;
+
+    public InMemoryHistoryManager() {
+        this.historyMap = new HashMap<>();
+        this.head = null;
+        this.tail = null;
     }
 
-    private Node head;
-    private Node tail;
-    private final Map<Integer, Node> historyMap = new HashMap<>();
-
+    // Метод добавляет задачу в список просмотренных задач.
     @Override
     public void add(Task task) {
-        if (task == null) return;
+        int id = task.getId();
+        remove(id);
 
-        remove(task.getId()); // Удаляем старый просмотр (если есть)
-        Node newNode = new Node(task);
-        linkLast(newNode); // Добавляем в конец списка
-        historyMap.put(task.getId(), newNode); // Запоминаем узел
+        linkLast(task);
+        historyMap.put(id, tail);
     }
 
+    // Метод удаляет задачу из истории просмотров
     @Override
     public void remove(Integer id) {
-        Node node = historyMap.remove(id);
-        if (node != null) {
-            unlink(node); // Удаляем узел из списка
+        if (historyMap.containsKey(id)) {
+            removeNode(historyMap.get(id));
+            historyMap.remove(id);
         }
+    }
+
+    // Метод возвращает список последних просмотренных задач
+    @Override
+    public List<Task> getHistory() {
+        return getTasks();
     }
 
     @Override
-    public List<Task> getHistory() {
-        List<Task> history = new ArrayList<>();
-        Node current = head;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InMemoryHistoryManager that = (InMemoryHistoryManager) o;
+        return Objects.equals(getTasks(), that.getTasks());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTasks());
+    }
+
+    // Метод добавляет задачу в конец списка истории просмотров
+    private void linkLast(Task task) {
+        if (head == null) {
+            head = new TaskNode(task);
+            tail = head;
+        } else {
+            tail.setNext(new TaskNode(task, tail));
+            tail = tail.getNext();
+        }
+    }
+
+    // Метод удаляет узел из двусвязного списка
+    private void removeNode(TaskNode taskNode) {
+        if (taskNode.getNext() == null && taskNode.getPrev() == null) {
+            head = null;
+            tail = null;
+        } else if (taskNode.getPrev() == null) {
+            head = taskNode.getNext();
+            head.setPrev(null);
+        } else if (taskNode.getNext() == null) {
+            tail = taskNode.getPrev();
+            tail.setNext(null);
+        } else {
+            taskNode.getPrev().setNext(taskNode.getNext());
+            taskNode.getNext().setPrev(taskNode.getPrev());
+        }
+    }
+
+    // Метод собирает задачи из двусвязного списка в обычный ArrayList
+    private List<Task> getTasks() {
+        List<Task> listHistory = new ArrayList<>();
+        TaskNode current = head;
+
         while (current != null) {
-            history.add(current.task);
-            current = current.next;
+            listHistory.add(current.getTask());
+            current = current.getNext();
         }
-        return history;
+        return listHistory;
     }
-
-    private void linkLast(Node node) {
-        if (tail == null) {
-            head = tail = node;
-        } else {
-            tail.next = node;
-            node.prev = tail;
-            tail = node;
-        }
-    }
-
-    private void unlink(Node node) {
-        if (node.prev != null) {
-            node.prev.next = node.next;
-        } else {
-            head = node.next;
-        }
-
-        if (node.next != null) {
-            node.next.prev = node.prev;
-        } else {
-            tail = node.prev;
-        }
-    }
-
 }
