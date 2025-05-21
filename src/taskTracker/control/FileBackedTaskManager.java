@@ -121,19 +121,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     tasks.add(task);
                 }
             }
+            int maxId = 0;
             for (Task task : tasks) {
+                int taskId = task.getId();
+                maxId = Math.max(maxId, taskId);
+
                 switch (task.getTaskType()) {
-                    case TASK:
-                        manager.createTask((Task) task);
-                        break;
-                    case EPIC:
-                        manager.createEpic((Epic) task);
-                        break;
-                    case SUBTASK:
-                        manager.createSubtask((Subtask) task);
-                        break;
+                    case TASK -> manager.allTasks.put(taskId, task);
+                    case EPIC -> manager.allEpics.put(taskId, (Epic) task);
+                    case SUBTASK -> {
+                        Subtask subtask = (Subtask) task;
+                        manager.allSubtasks.put(taskId, subtask);
+                        Epic epic = manager.allEpics.get(subtask.getEpicId());
+                        if (epic != null) {
+                            epic.addSubtask(subtask.getId());
+                        }
+                    }
                 }
             }
+            manager.id = maxId;
         } catch (IOException e) {
             throw new ManagerReadException("Ошибка при чтении данных из файла: " + e.getMessage());
         }
