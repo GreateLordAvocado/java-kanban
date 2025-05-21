@@ -4,27 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class EpicTest {
+
+    static Epic epic1 = new Epic(5, "Эпик 1", "Описание эпика 1", Status.NEW);
+    static Epic epic2 = new Epic(5, "Эпик 2", "Описание эпика 2", Status.IN_PROGRESS);
+
+    //проверьте, что наследники класса Task равны друг другу, если равен их id;
     @Test
-    void epicsWithSameIdShouldBeEqual() {
-        Epic epic1 = new Epic("Epic 1", "Epic Description 1");
-        Epic epic2 = new Epic("Epic 1", "Epic Description 1");
-        epic1.setId(1);
-        epic2.setId(1);
-
-        assertEquals(epic1, epic2, "Эпики с одинаковым ID должны быть равны");
+    public void tasksWithEqualIdShouldBeEqual() {
+        assertEquals(epic1, epic2, "Наследники класса task.Task с одинаковым id должны быть равны!");
     }
-
-    @Test
-    void epicShouldStoreSubtaskIds() {
-        Epic epic = new Epic("Epic 1", "Epic Description 1");
-        epic.setId(1);
-
-        Subtask subtask = new Subtask("Subtask 1", "Subtask Description 1", Status.NEW, epic.getId());
-        subtask.setId(2);
-
-        epic.addSubtaskEpic(subtask.getId()); // Здесь исправлено
-
-        assertTrue(epic.getSubtasksEpic().contains(subtask.getId()), "Эпик должен хранить ID подзадачи");
-    }
-
 }

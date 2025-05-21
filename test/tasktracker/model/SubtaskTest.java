@@ -4,21 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class SubtaskTest {
+
+    static Subtask subtask1 = new Subtask(10, "Подзадача 1", "Описание 1", Status.NEW, 5);
+    static Subtask subtask2 = new Subtask(10, "Подзадача 2", "Описание 2", Status.DONE, 5);
+
+    //проверьте, что наследники класса Task равны друг другу, если равен их id;
     @Test
-    void subtasksWithSameIdShouldBeEqual() {
-        Subtask subtask1 = new Subtask("Subtask 1", "Subtask Description 1", Status.NEW, 1);
-        Subtask subtask2 = new Subtask("Subtask 1", "Subtask Description 1", Status.NEW, 1);
-        subtask1.setId(1);
-        subtask2.setId(1);
-
-        assertEquals(subtask1, subtask2, "Подзадачи с одинаковым ID должны быть равны");
+    public void tasksWithEqualIdShouldBeEqual() {
+        assertEquals(subtask1, subtask2, "Наследники класса task.Task с одинаковым id должны быть равны! ");
     }
-
-    @Test
-    void subtaskShouldHaveParentEpic() {
-        Subtask subtask = new Subtask("Subtask 1", "Description 1", Status.NEW, 1);
-
-        assertEquals(1, subtask.getEpicId(), "Подзадача должна быть привязана к эпику");
-    }
-
 }

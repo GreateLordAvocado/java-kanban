@@ -4,37 +4,58 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
-    private final List<Integer> subtasksEpic;
+
+    private List<Integer> subtasksId = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, description);
-        this.subtasksEpic = new ArrayList<>();
+        this.subtasksId = new ArrayList<>();
     }
 
-    public List<Integer> getSubtasksEpic() {
-        return subtasksEpic;
+    public Epic(Integer id, String name, String description, Status status) {
+        super(id, name, description, status);
+        this.subtasksId = new ArrayList<>();
     }
 
-    public void addSubtaskEpic(int subtaskId) {
-        subtasksEpic.add(subtaskId);
+    public Epic(Integer id, String name, String description) {
+        super(id, name, description);
+        this.subtasksId = new ArrayList<>();
     }
 
-    public void removeSubtask(int subtaskId) {
-        subtasksEpic.remove(Integer.valueOf(subtaskId));
+    public void addSubtask(Integer subtaskId) {
+        if (subtaskId != this.getId()) {
+            subtasksId.add(subtaskId);
+        }
     }
 
-    public void clearSubtasks() {
-        subtasksEpic.clear();
+    public List<Integer> getSubtasksId() {
+        return subtasksId;
+    }
+
+    public void clearSubtasksId() {
+        subtasksId.clear();
+    }
+
+    public void deleteSubtaskById(Integer id) {
+        subtasksId.remove(id);
+    }
+
+    public void setSubtasksId(List<Integer> subtasksId) {
+        this.subtasksId = subtasksId;
+    }
+
+    public TaskType getTaskType() {
+        return TaskType.EPIC;
     }
 
     @Override
     public String toString() {
-        return "Эпик №"
-                + getId() + ": "
-                + getName() + ", Описание: "
-                + getDescription() + " Текущий статус "
-                + getStatus() + ", Подзадачи "
-                + subtasksEpic;
+        return String.join(",",
+                getId().toString(),
+                TaskType.EPIC.toString(),
+                getName(),
+                getStatus().toString(),
+                getDescription(),
+                "");
     }
-
 }

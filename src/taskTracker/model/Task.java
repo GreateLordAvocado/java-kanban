@@ -1,27 +1,38 @@
 package tasktracker.model;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
-    private int id;
+
+    private Integer id;
     private String name;
     private String description;
     private Status status;
-    private final LocalDateTime createdAt;
+
+    public Task(Integer id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public Task(Integer id, String name, String description, Status status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.status = Status.NEW;
-        this.createdAt = LocalDateTime.now();
+        status = Status.NEW;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -29,35 +40,46 @@ public class Task {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public TaskType getTaskType() {
+        return TaskType.TASK;
+    }
+
+    @Override
+    public String toString() {
+        return String.join(",",
+                getId().toString(),
+                TaskType.TASK.toString(),
+                getName(),
+                getStatus().toString(),
+                getDescription() != null ? getDescription() : "",
+                "");
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Task task = (Task) o;
+        if (this == o) return true;
+        if (!(o instanceof Task task)) return false;
         return id == task.id;
     }
 
@@ -65,14 +87,4 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-    @Override
-    public String toString() {
-        return "Задача №" + id
-                + ": " + name + " "
-                + ", Описание: " + description + " "
-                + " Текущий статус: " + status
-                + ", Создано: " + createdAt;
-    }
-
 }
