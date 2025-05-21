@@ -33,7 +33,7 @@ public class Main {
         Subtask subtask2 = new Subtask("Подзадача 2", "Понять что все плохо", epic1.getId());
         taskManager.createSubtask(subtask2);
         inMemoryTaskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Подзадача 3", "Как-то с гоем пополам написать код", epic1.getId());
+        Subtask subtask3 = new Subtask("Подзадача 3", "Как-то с горем пополам написать код", epic1.getId());
         taskManager.createSubtask(subtask3);
         inMemoryTaskManager.createSubtask(subtask3);
 
