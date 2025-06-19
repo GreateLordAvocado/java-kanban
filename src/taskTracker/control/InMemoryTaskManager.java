@@ -8,14 +8,14 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private final Map<Integer, Task> allTasks = new HashMap<>();
-    private final Map<Integer, Epic> allEpics = new HashMap<>();
-    private final Map<Integer, Subtask> allSubtasks = new HashMap<>();
+    protected final Map<Integer, Task> allTasks = new HashMap<>();
+    protected final Map<Integer, Epic> allEpics = new HashMap<>();
+    protected final Map<Integer, Subtask> allSubtasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private final Comparator<Task> taskComparator = Comparator.comparing(Task::getStartTime,
             Comparator.nullsLast(Comparator.naturalOrder()));
     private final Set<Task> prioritizedTasks = new TreeSet<>(taskComparator);
-    private Integer id = 1;
+    protected Integer id = 1;
 
     //Методы получения списков всех созданных задач, эпиков и подзадач
     @Override
