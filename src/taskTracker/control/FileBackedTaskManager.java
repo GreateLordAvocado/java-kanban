@@ -121,7 +121,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
             List<Task> tasks = new ArrayList<>();
 
-            while ((line = bufferedReader.readLine()) != null) {
+             while ((line = bufferedReader.readLine()) != null) {
                 Task task = fromString(line);
                 if (task != null) {
                     tasks.add(task);
