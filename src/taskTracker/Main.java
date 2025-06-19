@@ -17,10 +17,10 @@ public class Main {
         TaskManager taskManager = Managers.loadFromFile(file);
 
         // Создание двух задач, эпика с тремя подзадачами и эпика без подзадач
-        Task task1 = new Task("Диплом", "Защитить диплом в универе");
+        Task task1 = new Task("Пройти курсы по Java", "Отучиться на Яндекс Практикуме");
         taskManager.createTask(task1);
         inMemoryTaskManager.createTask(task1);
-        Task task2 = new Task("Пройти курсы по Java", "Отучиться на Яндекс Практикуме");
+        Task task2 = new Task("Диплом", "Защитить диплом в универе");
         taskManager.createTask(task2);
         inMemoryTaskManager.createTask(task2);
 
@@ -33,7 +33,7 @@ public class Main {
         Subtask subtask2 = new Subtask("Подзадача 2", "Понять что все плохо", epic1.getId());
         taskManager.createSubtask(subtask2);
         inMemoryTaskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Подзадача 3", "Как-то с гоем пополам написать код", epic1.getId());
+        Subtask subtask3 = new Subtask("Подзадача 3", "Как-то с горем пополам написать код", epic1.getId());
         taskManager.createSubtask(subtask3);
         inMemoryTaskManager.createSubtask(subtask3);
 
@@ -46,12 +46,12 @@ public class Main {
         System.out.println();
 
         //Изменение статусов
-        task1.setStatus(Status.IN_PROGRESS);
-        task2.setStatus(Status.DONE);
+        task1.setStatus(TaskStatus.IN_PROGRESS);
+        task2.setStatus(TaskStatus.DONE);
 
-        subtask1.setStatus(Status.DONE);
-        subtask2.setStatus(Status.IN_PROGRESS);
-        subtask3.setStatus(Status.IN_PROGRESS);
+        subtask1.setStatus(TaskStatus.DONE);
+        subtask2.setStatus(TaskStatus.IN_PROGRESS);
+        subtask3.setStatus(TaskStatus.IN_PROGRESS);
 
         // Обновление статусов
         taskManager.updateTask(task1);
