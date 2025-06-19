@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 class TaskTest {
 
-    static Task task1 = new Task(3, "Задача 1", "Описание задачи 1", Status.NEW);
-    static Task task2 = new Task(3, "Задача 2", "Описание задачи 2", Status.DONE);
+    static Task task1 = new Task(3, "Задача 1", "Описание задачи 1", TaskStatus.NEW);
+    static Task task2 = new Task(3, "Задача 2", "Описание задачи 2", TaskStatus.DONE);
 
     //проверьте, что экземпляры класса Task равны друг другу, если равен их id;
     @Test
