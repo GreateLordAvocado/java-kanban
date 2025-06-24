@@ -1,5 +1,6 @@
 package tasktracker.control;
 
+import tasktracker.exceptions.ManagerSaveException;
 import tasktracker.model.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,10 +46,10 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     @Override
     protected FileBackedTaskManager createTaskManager() {
         try {
-            file = File.createTempFile("tasks", ".csv");
+            File file = File.createTempFile("tasks", ".csv");
             return new FileBackedTaskManager(file);
         } catch (IOException e) {
-            throw new RuntimeException("Не удалось создать временный файл", e);
+            throw new ManagerSaveException("Не удалось создать временный файл");
         }
     }
 
