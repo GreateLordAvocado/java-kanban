@@ -36,35 +36,37 @@ public class InMemoryTaskManager implements TaskManager {
     //Методы для удаления всех задач, эпиков и подзадач
     @Override
     public void deleteAllTasks() {
-        allTasks.keySet().forEach(id -> {
+        for (Integer id : allTasks.keySet()) {
             historyManager.remove(id);
-            prioritizedTasks.removeIf(task -> task.getId().equals(id));
-        });
+            prioritizedTasks.remove(allTasks.get(id));
+        }
         allTasks.clear();
     }
 
     @Override
     public void deleteAllEpics() {
-        allEpics.keySet().forEach(historyManager::remove);
-        allSubtasks.keySet().forEach(id -> {
+        for (Integer id : allEpics.keySet()) {
             historyManager.remove(id);
-            prioritizedTasks.removeIf(task -> task.getId().equals(id));
-        });
+        }
+        for (Integer id : allSubtasks.keySet()) {
+            historyManager.remove(id);
+            prioritizedTasks.remove(allSubtasks.get(id));
+        }
         allSubtasks.clear();
         allEpics.clear();
     }
 
     @Override
     public void deleteAllSubtasks() {
-        allSubtasks.keySet().forEach(id -> {
+        for (Integer id : allSubtasks.keySet()) {
             historyManager.remove(id);
-            prioritizedTasks.removeIf(task -> task.getId().equals(id));
-        });
-        allEpics.values().forEach(epic -> {
+            prioritizedTasks.remove(allSubtasks.get(id));
+        }
+        for (Epic epic : allEpics.values()) {
             epic.getSubtasksId().clear();
-            checkEpicDuration(epic);
+            updateEpicDuration(epic);
             checkEpicStatus(epic.getId());
-        });
+        }
         allSubtasks.clear();
     }
 
@@ -124,7 +126,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         epic.setId(generateId());
         allEpics.put(epic.getId(), epic);
-        checkEpicDuration(epic);
+        updateEpicDuration(epic);
     }
 
     @Override
@@ -151,7 +153,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         Epic epic = allEpics.get(subtask.getEpicId());
         epic.addSubtask(subtask.getId());
-        checkEpicDuration(epic);
+        updateEpicDuration(epic);
         checkEpicStatus(epic.getId());
     }
 
@@ -190,7 +192,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic existing = allEpics.get(epic.getId());
         existing.setName(epic.getName());
         existing.setDescription(epic.getDescription());
-        checkEpicDuration(existing);
+        updateEpicDuration(existing);
     }
 
     @Override
@@ -218,7 +220,7 @@ public class InMemoryTaskManager implements TaskManager {
             prioritizedTasks.add(subtask);
         }
         Epic epic = allEpics.get(subtask.getEpicId());
-        checkEpicDuration(epic);
+        updateEpicDuration(epic);
         checkEpicStatus(epic.getId());
     }
 
@@ -267,7 +269,7 @@ public class InMemoryTaskManager implements TaskManager {
         prioritizedTasks.remove(subtask);
         int epicId = subtask.getEpicId();
         allEpics.get(epicId).deleteSubtaskById(idSubtask);
-        checkEpicDuration(getEpicById(subtask.getEpicId()));
+        updateEpicDuration(getEpicById(subtask.getEpicId()));
         checkEpicStatus(epicId);
         historyManager.remove(idSubtask);
     }
@@ -325,7 +327,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    private void checkEpicDuration(Epic epic) {
+    private void updateEpicDuration(Epic epic) {
         List<Subtask> activeSubtasks = getSubtaskByEpic(epic.getId()).stream()
                 .filter(subtask -> subtask.getStartTime() != null)
                 .toList();
@@ -376,4 +378,4 @@ public class InMemoryTaskManager implements TaskManager {
     private Integer generateId() {
         return this.id++;
     }
-}
+} //
