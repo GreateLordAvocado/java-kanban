@@ -116,7 +116,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         manager.createSubtask(subtask);
         epic.setDescription("Исправить замечания ФЗ-7");
         subtask.setStatus(TaskStatus.DONE);
-        manager.checkEpicStatus(epic.getId());
+        manager.actualizeEpicStatus(epic.getId());
         assertEquals("Исправить замечания ФЗ-7", epic.getDescription(),
                 "Эпик должен обновить свое описание!");
         assertEquals(TaskStatus.DONE, epic.getStatus(),
