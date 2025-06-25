@@ -3,9 +3,14 @@ package tasktracker.control;
 import tasktracker.exceptions.*;
 import tasktracker.model.*;
 
+
 import java.io.*;
 import java.util.*;
 import java.nio.charset.StandardCharsets;
+
+import static tasktracker.model.Epic.parseEpicFromString;
+import static tasktracker.model.Subtask.parseSubtaskFromString;
+import static tasktracker.model.Task.parseTaskFromString;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
@@ -96,13 +101,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void checkEpicStatus(Integer idEpic) {
-        super.checkEpicStatus(idEpic);
+    public void actualizeEpicStatus(Integer idEpic) {
+        super.actualizeEpicStatus(idEpic);
         save();
     }
 
     // Метод, который восстанавливает состояние менеджера из файла
-    public static FileBackedTaskManager loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) throws ManagerReadException {
         if (file == null || !file.exists()) {
             throw new ManagerReadException("Файл не существует");
         }
@@ -115,12 +120,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
             List<Task> tasks = new ArrayList<>();
 
-            while ((line = bufferedReader.readLine()) != null) {
+             while ((line = bufferedReader.readLine()) != null) {
                 Task task = fromString(line);
                 if (task != null) {
                     tasks.add(task);
                 }
             }
+
             int maxId = 0;
             for (Task task : tasks) {
                 int taskId = task.getId();
@@ -148,12 +154,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     // Метод, который сохраняет текущее состояние менеджера в указанный файл
     private void save() {
-        if (file == null) {
-            return;
-        }
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,title,description,status,epic,startTime,duration\n");
 
             for (Task task : getAllTasks()) {
                 writer.write(task.toString() + "\n");
@@ -171,28 +173,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     // Метод создания задачи из строки
     private static Task fromString(String value) {
-        final String[] words = value.split(",", -1);
+        String[] words = value.split(",", -1);
 
         try {
-            final TaskType taskType = TaskType.valueOf(words[1]);
-            switch (taskType) {
-                case TASK:
-                    Task task = new Task(Integer.parseInt(words[0]), words[2], words[4]);
-                    task.setStatus(Status.valueOf(words[3]));
-                    return task;
-                case EPIC:
-                    Epic epic = new Epic(Integer.parseInt(words[0]), words[2], words[4]);
-                    epic.setStatus(Status.valueOf(words[3]));
-                    return epic;
-                case SUBTASK:
-                    Subtask subtask = new Subtask(
-                            Integer.parseInt(words[0]), words[2], words[4], Integer.parseInt(words[5]));
-                    subtask.setStatus(Status.valueOf(words[3]));
-                    return subtask;
-            }
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Некорректные данные в строке: " + value, e);
+            TaskType type = TaskType.valueOf(words[1]);
+            return switch (type) {
+                case TASK -> parseTaskFromString(words);
+                case EPIC -> parseEpicFromString(words);
+                case SUBTASK -> parseSubtaskFromString(words);
+            };
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Ошибка парсинга строки: " + value, e);
         }
-        return null;
     }
-}
+} //
