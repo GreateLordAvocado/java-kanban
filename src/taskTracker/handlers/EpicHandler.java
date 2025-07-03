@@ -80,7 +80,8 @@ public class EpicHandler extends BaseHttpHandler {
             if (epic.getName() == null || epic.getName().trim().isEmpty()) {
                 sendErrorRequest(exchange, "Имя эпика не может быть пустым");
                 return;
-            } if (epic.getId() == null || epic.getId() == 0) {
+            }
+            if (epic.getId() == null || epic.getId() == 0) {
                 taskManager.createEpic(epic);
                 sendCreateOrUpdateItem(exchange);
             } else {
