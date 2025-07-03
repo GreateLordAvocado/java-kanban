@@ -84,7 +84,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = allEpics.get(idEpic);
         if (epic != null) {
             historyManager.add(epic);
-        } if (epic == null) {
+        }
+        if (epic == null) {
             throw new NotFoundException("Эпик с id=" + id + " не найден");
         }
         return epic;
@@ -397,4 +398,4 @@ public class InMemoryTaskManager implements TaskManager {
     private Integer generateId() {
         return this.id++;
     }
-}
+} // я хочу плакать
