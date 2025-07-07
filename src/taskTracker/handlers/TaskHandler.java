@@ -1,11 +1,7 @@
 package tasktracker.handlers;
 
-import com.google.gson.*;
 import com.sun.net.httpserver.HttpExchange;
 import tasktracker.models.Task;
-import tasktracker.exceptions.ManagerSaveException;
-import tasktracker.exceptions.NotFoundException;
-import tasktracker.exceptions.TimeOverlapException;
 import tasktracker.managers.TaskManager;
 
 import java.io.IOException;
