@@ -1,11 +1,8 @@
 package tasktracker.handlers;
 
-import com.google.gson.*;
 import com.sun.net.httpserver.HttpExchange;
 import tasktracker.models.Subtask;
-import tasktracker.exceptions.ManagerSaveException;
 import tasktracker.exceptions.NotFoundException;
-import tasktracker.exceptions.TimeOverlapException;
 import tasktracker.managers.TaskManager;
 
 import java.io.IOException;
@@ -36,18 +33,8 @@ public class SubtaskHandler extends BaseHttpHandler {
                 default:
                     sendMethodNotAllowed(exchange, path);
             }
-        } catch (JsonSyntaxException e) {
-            sendErrorRequest(exchange, "Неверный формат JSON");
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат данных");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (TimeOverlapException e) {
-            sendHasInteractions(exchange, e.getMessage());
-        } catch (ManagerSaveException e) {
-            sendServerErrorResponse(exchange, e.getMessage());
         } catch (Exception e) {
-            sendServerErrorResponse(exchange, "Ошибка сервера: " + e.getMessage());
+            handleException(exchange, e);
         }
     }
 
@@ -65,12 +52,8 @@ public class SubtaskHandler extends BaseHttpHandler {
                 }
                 sendText(exchange, subtask);
             }
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат ID подзадачи");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
         } catch (Exception e) {
-            sendServerErrorResponse(exchange, "Внутренняя ошибка сервера");
+            handleException(exchange, e);
         }
     }
 
@@ -99,14 +82,8 @@ public class SubtaskHandler extends BaseHttpHandler {
             }
             sendCreateOrUpdateItem(exchange);
 
-        } catch (JsonSyntaxException e) {
-            sendErrorRequest(exchange, "Неверный формат JSON");
-        } catch (TimeOverlapException e) {
-            sendHasInteractions(exchange, e.getMessage());
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (IllegalArgumentException e) {
-            sendErrorRequest(exchange, e.getMessage());
+        } catch (Exception e) {
+            handleException(exchange, e);
         }
     }
 
@@ -121,12 +98,8 @@ public class SubtaskHandler extends BaseHttpHandler {
                 taskManager.deleteSubtask(subtaskId);
                 sendText(exchange, "Подзадача успешно удалена");
             }
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат ID подзадачи");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (ManagerSaveException e) {
-            sendServerErrorResponse(exchange, e.getMessage());
+        } catch (Exception e) {
+            handleException(exchange, e);
         }
     }
 }

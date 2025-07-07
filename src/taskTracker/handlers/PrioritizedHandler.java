@@ -26,7 +26,7 @@ public class PrioritizedHandler extends BaseHttpHandler {
                 sendMethodNotAllowed(exchange, path);
             }
         } catch (Exception e) {
-            sendServerErrorResponse(exchange, "Ошибка сервера: " + e.getMessage());
+            handleException(exchange, e);
         }
     }
 }

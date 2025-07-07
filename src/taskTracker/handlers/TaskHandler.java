@@ -36,18 +36,8 @@ public class TaskHandler extends BaseHttpHandler {
                 default:
                     sendMethodNotAllowed(exchange, path);
             }
-        } catch (JsonSyntaxException e) {
-            sendErrorRequest(exchange, "Неверный формат JSON");
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат данных");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (TimeOverlapException e) {
-            sendHasInteractions(exchange, e.getMessage());
-        } catch (ManagerSaveException e) {
-            sendServerErrorResponse(exchange, e.getMessage());
         } catch (Exception e) {
-            sendServerErrorResponse(exchange, "Ошибка сервера: " + e.getMessage());
+            handleException(exchange, e);
         }
     }
 
@@ -66,12 +56,8 @@ public class TaskHandler extends BaseHttpHandler {
                 }
                 sendText(exchange, task);
             }
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат ID задачи");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
         } catch (Exception e) {
-            sendServerErrorResponse(exchange, "Внутренняя ошибка сервера");
+            handleException(exchange, e);
         }
     }
 
@@ -91,14 +77,8 @@ public class TaskHandler extends BaseHttpHandler {
                 taskManager.updateTask(task);
                 sendCreateOrUpdateItem(exchange);
             }
-        } catch (JsonSyntaxException e) {
-            sendErrorRequest(exchange, "Неверный формат JSON");
-        } catch (TimeOverlapException e) {
-            sendHasInteractions(exchange, e.getMessage());
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (IllegalArgumentException e) {
-            sendErrorRequest(exchange, e.getMessage());
+        } catch (Exception e) {
+            handleException(exchange, e);
         }
     }
 
@@ -113,12 +93,8 @@ public class TaskHandler extends BaseHttpHandler {
                 taskManager.deleteTask(taskId);
                 sendText(exchange, "Задача успешно удалена");
             }
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат ID задачи");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (ManagerSaveException e) {
-            sendServerErrorResponse(exchange, e.getMessage());
+        } catch (Exception e) {
+            handleException(exchange, e);
         }
     }
 }

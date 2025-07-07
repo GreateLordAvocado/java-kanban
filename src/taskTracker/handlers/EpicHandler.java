@@ -1,10 +1,7 @@
 package tasktracker.handlers;
 
-import com.google.gson.*;
 import com.sun.net.httpserver.HttpExchange;
 import tasktracker.models.*;
-import tasktracker.exceptions.ManagerSaveException;
-import tasktracker.exceptions.NotFoundException;
 import tasktracker.managers.TaskManager;
 
 import java.io.IOException;
@@ -35,16 +32,8 @@ public class EpicHandler extends BaseHttpHandler {
                 default:
                     sendMethodNotAllowed(exchange, path);
             }
-        } catch (JsonSyntaxException e) {
-            sendErrorRequest(exchange, "Неверный формат JSON");
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат данных");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (ManagerSaveException e) {
-            sendServerErrorResponse(exchange, e.getMessage());
         } catch (Exception e) {
-            sendServerErrorResponse(exchange, "Ошибка сервера: " + e.getMessage());
+            handleException(exchange, e);
         }
     }
 
@@ -63,12 +52,8 @@ public class EpicHandler extends BaseHttpHandler {
                 Epic epic = taskManager.getEpicById(epicId);
                 sendText(exchange, epic);
             }
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат ID эпика");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
         } catch (Exception e) {
-            sendServerErrorResponse(exchange, "Внутренняя ошибка сервера");
+            handleException(exchange, e);
         }
     }
 
@@ -88,12 +73,8 @@ public class EpicHandler extends BaseHttpHandler {
                 taskManager.updateEpic(epic);
                 sendCreateOrUpdateItem(exchange);
             }
-        } catch (JsonSyntaxException e) {
-            sendErrorRequest(exchange, "Неверный формат JSON");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (IllegalArgumentException e) {
-            sendErrorRequest(exchange, e.getMessage());
+        } catch (Exception e) {
+            handleException(exchange, e);
         }
     }
 
@@ -108,12 +89,8 @@ public class EpicHandler extends BaseHttpHandler {
                 taskManager.deleteEpic(epicId);
                 sendText(exchange, "Эпик успешно удален");
             }
-        } catch (NumberFormatException e) {
-            sendErrorRequest(exchange, "Неверный формат ID эпика");
-        } catch (NotFoundException e) {
-            sendNotFound(exchange, e.getMessage());
-        } catch (ManagerSaveException e) {
-            sendServerErrorResponse(exchange, e.getMessage());
+        } catch (Exception e) {
+            handleException(exchange, e);
         }
     }
 }

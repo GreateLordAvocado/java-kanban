@@ -15,6 +15,7 @@ import com.sun.net.httpserver.HttpHandler;
 import tasktracker.managers.TaskManager;
 import tasktracker.adapters.DurationAdapter;
 import tasktracker.adapters.LocalDateTimeAdapter;
+import tasktracker.exceptions.*;
 
   // Общий класс для всех обработчиков, который содержит общие методы для чтения и отправки данных:
 
@@ -67,25 +68,45 @@ public abstract class BaseHttpHandler implements HttpHandler {
         sendMessage(exchange, text, 405);
     }
 
+    protected void sendNotAcceptable(HttpExchange exchange, String text) throws IOException {
+        sendMessage(exchange, text, 406);
+    }
+
+    protected void handleException(HttpExchange exchange, Exception e) throws IOException {
+        if (e instanceof JsonSyntaxException) {
+            sendErrorRequest(exchange, "Неверный формат JSON");
+        } else if (e instanceof IllegalArgumentException || e instanceof NumberFormatException) {
+            sendErrorRequest(exchange, "Неверный формат данных");
+        } else if (e instanceof NotFoundException) {
+            sendNotFound(exchange, e.getMessage());
+        } else if (e.getMessage() != null && e.getMessage().contains("пересекается")) {
+            sendNotAcceptable(exchange, e.getMessage());
+        } else if (e instanceof ManagerSaveException) {
+            sendServerErrorResponse(exchange, e.getMessage());
+        } else {
+            sendServerErrorResponse(exchange, "Ошибка сервера: " + e.getMessage());
+        }
+    }
+
     // Парсинг
     protected <T> T parseRequestBody(HttpExchange exchange, Class<T> type) throws IOException, JsonSyntaxException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         if (body == null || body.trim().isEmpty()) {
-            throw new JsonSyntaxException("Пустое тело запроса");
+            throw new IllegalArgumentException("Пустое тело запроса");
         }
         return gson.fromJson(body, type);
     }
 
     // Извлечение ID из пути URL
-    protected int parseIdFromPath(String path) throws IOException {
+    protected int parseIdFromPath(String path) {
+        String[] parts = path.split("/");
+        if (parts.length < 3) {
+            throw new IllegalArgumentException("Идентификатор не указан в пути");
+        }
         try {
-            String[] parts = path.split("/");
-            if (parts.length < 3) {
-                throw new IOException("Идентификатор не указан в пути");
-            }
             return Integer.parseInt(parts[2]);
         } catch (NumberFormatException e) {
-            throw new IOException("Неверный формат ID");
+            throw new IllegalArgumentException("Неверный формат ID");
         }
     }
 
